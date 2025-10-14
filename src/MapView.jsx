@@ -1,13 +1,26 @@
 import { Icon } from "leaflet";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { useState } from "react";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMapEvent,
+  useMapEvents,
+} from "react-leaflet";
 
 function MapView() {
-    function handleClick() {
-        console.log("hii");
-        
-    }
+  const [zoomLevel, setZoomLevel] = useState(2);
 
-  const countryMarkers = [
+  function ZoomHandler() {
+    useMapEvents({
+      zoomend: (e) => {
+        setZoomLevel(e.target.getZoom());
+      },
+    });
+  }
+
+  const CountryMarkers = [
     { geocode: [20.5937, 78.9629], Popup: "India" },
     { geocode: [37.0902, -95.7129], Popup: "United States" },
     { geocode: [36.2048, 138.2529], Popup: "Japan" },
@@ -58,31 +71,112 @@ function MapView() {
     { geocode: [56.2639, 9.5018], Popup: "Denmark" },
     { geocode: [53.1424, -7.6921], Popup: "Ireland" },
   ];
+  const DistrictMarkers = [
+    { geocode: [8.5241, 76.9366], Popup: "Thiruvananthapuram" },
+    { geocode: [8.8932, 76.6141], Popup: "Kollam" },
+    { geocode: [9.3815, 76.574], Popup: "Pathanamthitta" },
+    { geocode: [9.4981, 76.3388], Popup: "Alappuzha" },
+    { geocode: [9.9312, 76.2673], Popup: "Ernakulam" },
+    { geocode: [10.152, 76.3922], Popup: "Kottayam" },
+    { geocode: [9.7624, 76.5729], Popup: "Idukki" },
+    { geocode: [10.8505, 76.2711], Popup: "Thrissur" },
+    { geocode: [10.7867, 76.6548], Popup: "Palakkad" },
+    { geocode: [11.2588, 75.7804], Popup: "Kozhikode" },
+    { geocode: [11.8745, 75.3704], Popup: "Kannur" },
+    { geocode: [11.8745, 75.6544], Popup: "Wayanad" },
+    { geocode: [12.3052, 75.295], Popup: "Kasargod" },
+    { geocode: [10.5276, 76.2144], Popup: "Malappuram" },
+  ];
+  const StateMarkers = [
+    { geocode: [15.91, 79.74], Popup: "Andhra Pradesh" },
+    { geocode: [28.21, 94.72], Popup: "Arunachal Pradesh" },
+    { geocode: [26.2, 92.93], Popup: "Assam" },
+    { geocode: [25.09, 85.31], Popup: "Bihar" },
+    { geocode: [21.27, 81.86], Popup: "Chhattisgarh" },
+    { geocode: [15.29, 74.12], Popup: "Goa" },
+    { geocode: [22.25, 71.19], Popup: "Gujarat" },
+    { geocode: [29.05, 76.08], Popup: "Haryana" },
+    { geocode: [31.1, 77.17], Popup: "Himachal Pradesh" },
+    { geocode: [23.61, 85.27], Popup: "Jharkhand" },
+    { geocode: [15.31, 75.71], Popup: "Karnataka" },
+    { geocode: [10.85, 76.27], Popup: "Kerala" },
+    { geocode: [22.97, 78.65], Popup: "Madhya Pradesh" },
+    { geocode: [19.75, 75.71], Popup: "Maharashtra" },
+    { geocode: [24.66, 93.9], Popup: "Manipur" },
+    { geocode: [25.46, 91.36], Popup: "Meghalaya" },
+    { geocode: [23.16, 92.93], Popup: "Mizoram" },
+    { geocode: [26.15, 94.56], Popup: "Nagaland" },
+    { geocode: [20.95, 85.09], Popup: "Odisha" },
+    { geocode: [31.14, 75.34], Popup: "Punjab" },
+    { geocode: [27.02, 74.21], Popup: "Rajasthan" },
+    { geocode: [27.53, 88.51], Popup: "Sikkim" },
+    { geocode: [11.12, 78.65], Popup: "Tamil Nadu" },
+    { geocode: [18.11, 79.01], Popup: "Telangana" },
+    { geocode: [23.94, 91.98], Popup: "Tripura" },
+    { geocode: [26.84, 80.94], Popup: "Uttar Pradesh" },
+    { geocode: [30.06, 79.01], Popup: "Uttarakhand" },
+    { geocode: [22.98, 87.85], Popup: "West Bengal" },
+    { geocode: [11.66, 92.73], Popup: "Andaman and Nicobar Islands" },
+    { geocode: [30.73, 76.77], Popup: "Chandigarh" },
+    {
+      geocode: [20.18, 73.01],
+      Popup: "Dadra and Nagar Haveli and Daman and Diu",
+    },
+    { geocode: [28.66, 77.23], Popup: "Delhi" },
+    { geocode: [33.77, 76.57], Popup: "Jammu and Kashmir" },
+    { geocode: [10.56, 72.63], Popup: "Lakshadweep" },
+    { geocode: [34.29, 78.29], Popup: "Ladakh" },
+    { geocode: [11.94, 79.8], Popup: "Puducherry" },
+  ];
 
   const customIcon = new Icon({
     iconUrl: "https://cdn-icons-png.flaticon.com/128/929/929426.png",
     iconSize: [20, 20],
   });
 
+  const MarkersToShow =
+    zoomLevel < 5
+      ? CountryMarkers
+      : zoomLevel < 8
+      ? StateMarkers
+      : DistrictMarkers;
+
   return (
     <div
       style={{ height: "100vh", width: "100%" }}
-      className="d-flex justify-content-center"
+      className="d-flex justify-content-center align-items-center"
     >
       <MapContainer
         center={[20.5937, 78.9629]}
         zoom={2}
         style={{ height: "50%", width: "50%" }}
       >
+        <ZoomHandler />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
           url="https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png"
         />
-        {countryMarkers.map((marker) => (
-          <Marker 
-          position={marker.geocode} 
-          icon={customIcon}
-          onClick={handleClick}
+        {MarkersToShow.map((marker) => (
+          <Marker
+            position={marker.geocode}
+            icon={customIcon}
+            eventHandlers={{
+              mouseover: (e) => e.target.openPopup(),
+              mouseout: (e) => e.target.closePopup(),
+              click: (e) => {
+                if (zoomLevel < 5) {
+                  const map = e.target._map;
+                  map.flyTo(marker.geocode, 6, { duration: 1 });
+                }
+                else if (zoomLevel < 8){
+                  const map = e.target._map;
+                  map.flyTo(marker.geocode, 8, { duration: 1 });
+                }
+                else{
+                  e.target.openPopup();
+                }
+              },
+            }}
           >
             <Popup>
               <div

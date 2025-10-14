@@ -1,7 +1,4 @@
-import Map from "./Map"
 import MapView from "./MapView"
-import WeatherAppUI from "./WeatherAppUI"
-
 function App() {
   return (
     <>
