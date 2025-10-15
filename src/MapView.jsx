@@ -1,3 +1,4 @@
+import WeatherPopup from "./WeatherPopup";
 import { Icon } from "leaflet";
 import { useState } from "react";
 import {
@@ -180,18 +181,7 @@ function MapView() {
             }}
           >
             <Popup>
-              <div
-                style={{
-                  width: "80px",
-                  height: "30px",
-                  backgroundColor: "#ffffffff",
-                  color: "#080101ff",
-                  padding: "5px",
-                  textAlign: "center",
-                }}
-              >
-                {marker.Popup}
-              </div>
+              <WeatherPopup marker = {marker}/>
             </Popup>
           </Marker>
         ))}
