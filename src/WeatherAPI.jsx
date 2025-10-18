@@ -19,12 +19,12 @@ function WeatherAPI() {
 
   // useEffect(() => {
   //   // Fetch once on mount
-  //   WeatherData("Thiruvananthapuram");
+  //   WeatherData("palakkad");
   // }, []);
 
   return (
     <div className="p-3 text-center">
-      <Button onClick={() => WeatherData("Thiruvananthapuram")}>Fetch Weather</Button>
+      <Button onClick={() => WeatherData("palakkad")}>Fetch Weather</Button>
 
       {weather && (
         <div className="mt-3">
