@@ -1,0 +1,12 @@
+.leaflet-popup-content-wrapper{
+    background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+.leaflet-popup-content{
+    background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}

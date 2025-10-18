@@ -1,10 +1,10 @@
 import MapView from "./MapView"
+import WeatherAPI from "./WeatherAPI"
 function App() {
   return (
     <>
-      {/* <WeatherAppUI/>
-      <Map/> */}
       <MapView/>
+      {/* <WeatherAPI/> */}
     </>
   )
 }

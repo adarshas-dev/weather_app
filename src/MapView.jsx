@@ -1,4 +1,5 @@
-import WeatherPopup from "./WeatherPopup";
+import CityPopup from "./CityPopup";
+import "./Weather.css";
 import { Icon } from "leaflet";
 import { useState } from "react";
 import {
@@ -9,6 +10,7 @@ import {
   useMapEvent,
   useMapEvents,
 } from "react-leaflet";
+import CountryStatePopup from "./CountryStatePopup";
 
 function MapView() {
   const [zoomLevel, setZoomLevel] = useState(2);
@@ -73,20 +75,20 @@ function MapView() {
     { geocode: [53.1424, -7.6921], Popup: "Ireland" ,type: "country"},
   ];
   const DistrictMarkers = [
-    { geocode: [8.5241, 76.9366], Popup: "Thiruvananthapuram" },
-    { geocode: [8.8932, 76.6141], Popup: "Kollam" },
-    { geocode: [9.3815, 76.574], Popup: "Pathanamthitta" },
-    { geocode: [9.4981, 76.3388], Popup: "Alappuzha" },
-    { geocode: [9.9312, 76.2673], Popup: "Ernakulam" },
-    { geocode: [10.152, 76.3922], Popup: "Kottayam" },
-    { geocode: [9.7624, 76.5729], Popup: "Idukki" },
-    { geocode: [10.8505, 76.2711], Popup: "Thrissur" },
-    { geocode: [10.7867, 76.6548], Popup: "Palakkad" },
-    { geocode: [11.2588, 75.7804], Popup: "Kozhikode" },
-    { geocode: [11.8745, 75.3704], Popup: "Kannur" },
-    { geocode: [11.8745, 75.6544], Popup: "Wayanad" },
-    { geocode: [12.3052, 75.295], Popup: "Kasargod" },
-    { geocode: [10.5276, 76.2144], Popup: "Malappuram" },
+    { geocode: [8.5241, 76.9366], Popup: "Thiruvananthapuram", type: "city" },
+    { geocode: [8.8932, 76.6141], Popup: "Kollam" , type: "city"},
+    { geocode: [9.3815, 76.574], Popup: "Pathanamthitta", type: "city" },
+    { geocode: [9.4981, 76.3388], Popup: "Alappuzha" , type: "city"},
+    { geocode: [9.9312, 76.2673], Popup: "Ernakulam" , type: "city"},
+    { geocode: [10.152, 76.3922], Popup: "Kottayam" , type: "city"},
+    { geocode: [9.7624, 76.5729], Popup: "Idukki" , type: "city"},
+    { geocode: [10.8505, 76.2711], Popup: "Thrissur" , type: "city"},
+    { geocode: [10.7867, 76.6548], Popup: "Palakkad" , type: "city"},
+    { geocode: [11.2588, 75.7804], Popup: "Kozhikode" , type: "city"},
+    { geocode: [11.8745, 75.3704], Popup: "Kannur" , type: "city"},
+    { geocode: [11.8745, 75.6544], Popup: "Wayanad", type: "city" },
+    { geocode: [12.3052, 75.295], Popup: "Kasargod", type: "city" },
+    { geocode: [10.5276, 76.2144], Popup: "Malappuram" , type: "city"},
   ];
   const StateMarkers = [
     { geocode: [15.91, 79.74], Popup: "Andhra Pradesh" ,type: "state"},
@@ -180,8 +182,14 @@ function MapView() {
                   }),
             }}
           >
-            <Popup>
-              <WeatherPopup marker = {marker}/>
+            <Popup >
+              <div className="d-flex justify-content-center">
+                {marker.type === "city" ?(
+                  <CityPopup marker = {marker}/>
+                ):(
+                  <CountryStatePopup marker={marker}/>
+                )}
+              </div>
             </Popup>
           </Marker>
         ))}
