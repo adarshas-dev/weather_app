@@ -1,4 +1,5 @@
-import Toggle from "./toggle"
+import Search from "./Search"
+
 
 
 function App() {
@@ -6,9 +7,9 @@ function App() {
 
   return (
     <>
-     <Toggle/>
+     <Search/>
     </>
   )
 }
 
-export default App
+export default App;
