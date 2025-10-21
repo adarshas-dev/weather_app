@@ -131,7 +131,13 @@ function MapView() {
       <MapContainer
         center={[20.5937, 78.9629]}
         zoom={2}
-        style={{ height: "50%", width: "50%" }}
+        style={{
+          height: "80vh",
+          width: "80vw",
+          borderRadius: "20px", // rounded corners
+          overflow: "hidden", // important so map tiles stay inside rounded corners
+          boxShadow: "0 4px 15px rgba(0,0,0,0.2)", // optional shadow
+        }}
       >
         <ZoomHandler />
         <ClickHandler />

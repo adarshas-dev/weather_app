@@ -1,5 +1,6 @@
 import MapView from "./MapView";
 import Search from "./Search";
+import WeatherAPI from "./WeatherAPI";
 
 
 
@@ -10,7 +11,7 @@ function App() {
     <>
      <Search/>
       <MapView/>
-      {/* <WeatherAPI/> */}
+      <WeatherAPI/>
     </>
   )
 }

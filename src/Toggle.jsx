@@ -29,12 +29,12 @@ function Toggle() {
       <button
         onClick={toggleTheme}
         className="toggle-btn"
-        style={{
-          backgroundColor: theme === "light" ? "#f9f9f9" : "#121212",
-          color: theme === "light" ? "#121212" : "#f9f9f9",
-        }}
+        // style={{
+        //   backgroundColor: theme === "light" ? "#f9f9f9" : "#121212",
+        //   color: theme === "light" ? "#121212" : "#f9f9f9",
+        // }}
       >
-        {theme === "light" ? "☀️" : "🌙"}
+        {theme === "light" ? <img src="https://cdn-icons-png.flaticon.com/128/2024/2024058.png" style={{width:"40px"}} /> : <img src="https://cdn-icons-png.flaticon.com/128/3594/3594101.png" style={{width:"40px"}}/>}
       </button>
     </div>
   );
