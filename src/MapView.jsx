@@ -1,6 +1,6 @@
 import statesData from "./states.json";
 import CityPopup from "./CityPopup";
-import "./Weather.css";
+import "./MapView.css";
 import { Icon, popup } from "leaflet";
 import { useState } from "react";
 import {
