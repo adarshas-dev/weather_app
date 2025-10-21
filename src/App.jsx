@@ -3,7 +3,7 @@ import WeatherAPI from "./WeatherAPI"
 function App() {
   return (
     <>
-      {/* <MapView/> */}
+      <MapView/>
       <WeatherAPI/>
     </>
   )

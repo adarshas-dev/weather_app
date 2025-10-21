@@ -1,6 +1,7 @@
+import statesData from "./states.json";
 import CityPopup from "./CityPopup";
 import "./Weather.css";
-import { Icon } from "leaflet";
+import { Icon, popup } from "leaflet";
 import { useState } from "react";
 import {
   MapContainer,
@@ -14,6 +15,7 @@ import CountryStatePopup from "./CountryStatePopup";
 
 function MapView() {
   const [zoomLevel, setZoomLevel] = useState(2);
+  const [cityMarkers, setCityMarker] = useState(null);
 
   function ZoomHandler() {
     useMapEvents({
@@ -21,116 +23,97 @@ function MapView() {
         setZoomLevel(e.target.getZoom());
       },
     });
+    return null;
+  }
+  function ClickHandler() {
+    useMapEvents({
+      click: (e) => {
+        if (zoomLevel >= 8) {
+          const { lat, lng } = e.latlng;
+          setCityMarker({
+            geocode: [lat, lng],
+            Popup: "Selected City",
+            type: "city",
+          });
+          console.log("Latitude:", lat, "Longitude:", lng);
+        }
+      },
+    });
+    return null;
   }
 
   const CountryMarkers = [
-    { geocode: [20.5937, 78.9629], Popup: "India" ,type: "country"},
-    { geocode: [37.0902, -95.7129], Popup: "United States" ,type: "country"},
-    { geocode: [36.2048, 138.2529], Popup: "Japan" ,type: "country"},
-    { geocode: [-25.2744, 133.7751], Popup: "Australia" ,type: "country"},
-    { geocode: [55.3781, -3.436], Popup: "United Kingdom" ,type: "country"},
-    { geocode: [46.2276, 2.2137], Popup: "France" ,type: "country"},
-    { geocode: [51.1657, 10.4515], Popup: "Germany" ,type: "country"},
-    { geocode: [61.524, 105.3188], Popup: "Russia" ,type: "country"},
-    { geocode: [35.9078, 127.7669], Popup: "South Korea" ,type: "country"},
-    { geocode: [23.6345, -102.5528], Popup: "Mexico" ,type: "country"},
-    { geocode: [-14.235, -51.9253], Popup: "Brazil" ,type: "country"},
-    { geocode: [56.1304, -106.3468], Popup: "Canada",type: "country" },
-    { geocode: [39.9042, 116.4074], Popup: "China" ,type: "country"},
-    { geocode: [40.4637, -3.7492], Popup: "Spain" ,type: "country"},
-    { geocode: [41.8719, 12.5674], Popup: "Italy" ,type: "country"},
-    { geocode: [60.472, 8.4689], Popup: "Norway",type: "country" },
-    { geocode: [52.1326, 5.2913], Popup: "Netherlands" ,type: "country"},
-    { geocode: [4.2105, 101.9758], Popup: "Malaysia" ,type: "country"},
-    { geocode: [15.87, 100.9925], Popup: "Thailand",type: "country" },
-    { geocode: [1.3521, 103.8198], Popup: "Singapore",type: "country" },
-    { geocode: [-40.9006, 174.886], Popup: "New Zealand" ,type: "country"},
-    { geocode: [26.8206, 30.8025], Popup: "Egypt" ,type: "country"},
-    { geocode: [-1.2921, 36.8219], Popup: "Kenya" ,type: "country"},
-    { geocode: [-30.5595, 22.9375], Popup: "South Africa" ,type: "country"},
-    { geocode: [21.4735, 55.9754], Popup: "Oman" ,type: "country"},
-    { geocode: [25.276987, 55.296249], Popup: "United Arab Emirates" ,type: "country"},
-    { geocode: [24.7136, 46.6753], Popup: "Saudi Arabia" ,type: "country"},
-    { geocode: [33.9391, 67.71], Popup: "Afghanistan" ,type: "country"},
-    { geocode: [28.3949, 84.124], Popup: "Nepal",type: "country" },
-    { geocode: [23.685, 90.3563], Popup: "Bangladesh" ,type: "country"},
-    { geocode: [30.3753, 69.3451], Popup: "Pakistan" ,type: "country"},
-    { geocode: [7.8731, 80.7718], Popup: "Sri Lanka" ,type: "country"},
-    { geocode: [32.4279, 53.688], Popup: "Iran" ,type: "country"},
-    { geocode: [33.2232, 43.6793], Popup: "Iraq" ,type: "country"},
-    { geocode: [31.0461, 34.8516], Popup: "Israel" ,type: "country"},
-    { geocode: [31.9522, 35.2332], Popup: "Jordan" ,type: "country"},
-    { geocode: [34.8021, 38.9968], Popup: "Syria" ,type: "country"},
-    { geocode: [41.0082, 28.9784], Popup: "Turkey" ,type: "country"},
-    { geocode: [64.9631, -19.0208], Popup: "Iceland" ,type: "country"},
-    { geocode: [59.3293, 18.0686], Popup: "Sweden" ,type: "country"},
-    { geocode: [60.1699, 24.9384], Popup: "Finland" ,type: "country"},
-    { geocode: [47.5162, 14.5501], Popup: "Austria" ,type: "country"},
-    { geocode: [46.8182, 8.2275], Popup: "Switzerland" ,type: "country"},
-    { geocode: [48.669, 19.699], Popup: "Slovakia" ,type: "country"},
-    { geocode: [45.9432, 24.9668], Popup: "Romania" ,type: "country"},
-    { geocode: [46.1512, 14.9955], Popup: "Slovenia" ,type: "country"},
-    { geocode: [44.0165, 21.0059], Popup: "Serbia" ,type: "country"},
-    { geocode: [56.2639, 9.5018], Popup: "Denmark" ,type: "country"},
-    { geocode: [53.1424, -7.6921], Popup: "Ireland" ,type: "country"},
-  ];
-  const DistrictMarkers = [
-    { geocode: [8.5241, 76.9366], Popup: "Thiruvananthapuram", type: "city" },
-    { geocode: [8.8932, 76.6141], Popup: "Kollam" , type: "city"},
-    { geocode: [9.3815, 76.574], Popup: "Pathanamthitta", type: "city" },
-    { geocode: [9.4981, 76.3388], Popup: "Alappuzha" , type: "city"},
-    { geocode: [9.9312, 76.2673], Popup: "Ernakulam" , type: "city"},
-    { geocode: [10.152, 76.3922], Popup: "Kottayam" , type: "city"},
-    { geocode: [9.7624, 76.5729], Popup: "Idukki" , type: "city"},
-    { geocode: [10.8505, 76.2711], Popup: "Thrissur" , type: "city"},
-    { geocode: [10.7867, 76.6548], Popup: "Palakkad" , type: "city"},
-    { geocode: [11.2588, 75.7804], Popup: "Kozhikode" , type: "city"},
-    { geocode: [11.8745, 75.3704], Popup: "Kannur" , type: "city"},
-    { geocode: [11.8745, 75.6544], Popup: "Wayanad", type: "city" },
-    { geocode: [12.3052, 75.295], Popup: "Kasargod", type: "city" },
-    { geocode: [10.5276, 76.2144], Popup: "Malappuram" , type: "city"},
-  ];
-  const StateMarkers = [
-    { geocode: [15.91, 79.74], Popup: "Andhra Pradesh" ,type: "state"},
-    { geocode: [28.21, 94.72], Popup: "Arunachal Pradesh" ,type: "state"},
-    { geocode: [26.2, 92.93], Popup: "Assam" ,type: "state"},
-    { geocode: [25.09, 85.31], Popup: "Bihar" ,type: "state"},
-    { geocode: [21.27, 81.86], Popup: "Chhattisgarh" ,type: "state"},
-    { geocode: [15.29, 74.12], Popup: "Goa" ,type: "state"},
-    { geocode: [22.25, 71.19], Popup: "Gujarat" ,type: "state"},
-    { geocode: [29.05, 76.08], Popup: "Haryana" ,type: "state"},
-    { geocode: [31.1, 77.17], Popup: "Himachal Pradesh" ,type: "state"},
-    { geocode: [23.61, 85.27], Popup: "Jharkhand" ,type: "state"},
-    { geocode: [15.31, 75.71], Popup: "Karnataka" ,type: "state"},
-    { geocode: [10.85, 76.27], Popup: "Kerala" ,type: "state"},
-    { geocode: [22.97, 78.65], Popup: "Madhya Pradesh",type: "state"},
-    { geocode: [19.75, 75.71], Popup: "Maharashtra" ,type: "state"},
-    { geocode: [24.66, 93.9], Popup: "Manipur" ,type: "state"},
-    { geocode: [25.46, 91.36], Popup: "Meghalaya" ,type: "state"},
-    { geocode: [23.16, 92.93], Popup: "Mizoram" ,type: "state"},
-    { geocode: [26.15, 94.56], Popup: "Nagaland" ,type: "state"},
-    { geocode: [20.95, 85.09], Popup: "Odisha",type: "state"},
-    { geocode: [31.14, 75.34], Popup: "Punjab" ,type: "state"},
-    { geocode: [27.02, 74.21], Popup: "Rajasthan" ,type: "state"},
-    { geocode: [27.53, 88.51], Popup: "Sikkim" ,type: "state"},
-    { geocode: [11.12, 78.65], Popup: "Tamil Nadu" ,type: "state"},
-    { geocode: [18.11, 79.01], Popup: "Telangana" ,type: "state"},
-    { geocode: [23.94, 91.98], Popup: "Tripura" ,type: "state"},
-    { geocode: [26.84, 80.94], Popup: "Uttar Pradesh" ,type: "state"},
-    { geocode: [30.06, 79.01], Popup: "Uttarakhand" ,type: "state"},
-    { geocode: [22.98, 87.85], Popup: "West Bengal" ,type: "state"},
-    { geocode: [11.66, 92.73], Popup: "Andaman and Nicobar Islands" ,type: "state"},
-    { geocode: [30.73, 76.77], Popup: "Chandigarh" ,type: "state"},
+    { geocode: [20.5937, 78.9629], Popup: "India", type: "country" },
+    { geocode: [37.0902, -95.7129], Popup: "United States", type: "country" },
+    { geocode: [36.2048, 138.2529], Popup: "Japan", type: "country" },
+    { geocode: [-25.2744, 133.7751], Popup: "Australia", type: "country" },
+    { geocode: [55.3781, -3.436], Popup: "United Kingdom", type: "country" },
+    { geocode: [46.2276, 2.2137], Popup: "France", type: "country" },
+    { geocode: [51.1657, 10.4515], Popup: "Germany", type: "country" },
+    { geocode: [61.524, 105.3188], Popup: "Russia", type: "country" },
+    { geocode: [35.9078, 127.7669], Popup: "South Korea", type: "country" },
+    { geocode: [23.6345, -102.5528], Popup: "Mexico", type: "country" },
+    { geocode: [-14.235, -51.9253], Popup: "Brazil", type: "country" },
+    { geocode: [56.1304, -106.3468], Popup: "Canada", type: "country" },
+    { geocode: [39.9042, 116.4074], Popup: "China", type: "country" },
+    { geocode: [40.4637, -3.7492], Popup: "Spain", type: "country" },
+    { geocode: [41.8719, 12.5674], Popup: "Italy", type: "country" },
+    { geocode: [60.472, 8.4689], Popup: "Norway", type: "country" },
+    { geocode: [52.1326, 5.2913], Popup: "Netherlands", type: "country" },
+    { geocode: [4.2105, 101.9758], Popup: "Malaysia", type: "country" },
+    { geocode: [15.87, 100.9925], Popup: "Thailand", type: "country" },
+    { geocode: [1.3521, 103.8198], Popup: "Singapore", type: "country" },
+    { geocode: [-40.9006, 174.886], Popup: "New Zealand", type: "country" },
+    { geocode: [26.8206, 30.8025], Popup: "Egypt", type: "country" },
+    { geocode: [-1.2921, 36.8219], Popup: "Kenya", type: "country" },
+    { geocode: [-30.5595, 22.9375], Popup: "South Africa", type: "country" },
+    { geocode: [21.4735, 55.9754], Popup: "Oman", type: "country" },
     {
-      geocode: [20.18, 73.01],
-      Popup: "Dadra and Nagar Haveli and Daman and Diu",type: "state"
+      geocode: [25.276987, 55.296249],
+      Popup: "United Arab Emirates",
+      type: "country",
     },
-    { geocode: [28.66, 77.23], Popup: "Delhi" ,type: "state"},
-    { geocode: [33.77, 76.57], Popup: "Jammu and Kashmir" ,type: "state"},
-    { geocode: [10.56, 72.63], Popup: "Lakshadweep" ,type: "state"},
-    { geocode: [34.29, 78.29], Popup: "Ladakh" ,type: "state"},
-    { geocode: [11.94, 79.8], Popup: "Puducherry" ,type: "state"},
+    { geocode: [24.7136, 46.6753], Popup: "Saudi Arabia", type: "country" },
+    { geocode: [33.9391, 67.71], Popup: "Afghanistan", type: "country" },
+    { geocode: [28.3949, 84.124], Popup: "Nepal", type: "country" },
+    { geocode: [23.685, 90.3563], Popup: "Bangladesh", type: "country" },
+    { geocode: [30.3753, 69.3451], Popup: "Pakistan", type: "country" },
+    { geocode: [7.8731, 80.7718], Popup: "Sri Lanka", type: "country" },
+    { geocode: [32.4279, 53.688], Popup: "Iran", type: "country" },
+    { geocode: [33.2232, 43.6793], Popup: "Iraq", type: "country" },
+    { geocode: [31.0461, 34.8516], Popup: "Israel", type: "country" },
+    { geocode: [31.9522, 35.2332], Popup: "Jordan", type: "country" },
+    { geocode: [34.8021, 38.9968], Popup: "Syria", type: "country" },
+    { geocode: [41.0082, 28.9784], Popup: "Turkey", type: "country" },
+    { geocode: [64.9631, -19.0208], Popup: "Iceland", type: "country" },
+    { geocode: [59.3293, 18.0686], Popup: "Sweden", type: "country" },
+    { geocode: [60.1699, 24.9384], Popup: "Finland", type: "country" },
+    { geocode: [47.5162, 14.5501], Popup: "Austria", type: "country" },
+    { geocode: [46.8182, 8.2275], Popup: "Switzerland", type: "country" },
+    { geocode: [48.669, 19.699], Popup: "Slovakia", type: "country" },
+    { geocode: [45.9432, 24.9668], Popup: "Romania", type: "country" },
+    { geocode: [46.1512, 14.9955], Popup: "Slovenia", type: "country" },
+    { geocode: [44.0165, 21.0059], Popup: "Serbia", type: "country" },
+    { geocode: [56.2639, 9.5018], Popup: "Denmark", type: "country" },
+    { geocode: [53.1424, -7.6921], Popup: "Ireland", type: "country" },
   ];
+  const StateMarkers = statesData
+    .filter(
+      (state) =>
+        state.type === "state" ||
+        state.type === "union territory" ||
+        state.type === "province" ||
+        state.type === "prefecture" ||
+        state.type === "canton" ||
+        state.type === "region" ||
+        state.type === "administrative territory"
+    )
+    .map((state, index) => ({
+      key: state.id,
+      geocode: [state.latitude, state.longitude],
+      Popup: state.name,
+      type: state.type,
+    }));
 
   const customIcon = new Icon({
     iconUrl: "https://cdn-icons-png.flaticon.com/128/929/929426.png",
@@ -138,11 +121,7 @@ function MapView() {
   });
 
   const MarkersToShow =
-    zoomLevel < 5
-      ? CountryMarkers
-      : zoomLevel < 8
-      ? StateMarkers
-      : DistrictMarkers;
+    zoomLevel < 5 ? CountryMarkers : zoomLevel <= 7 ? StateMarkers : [];
 
   return (
     <div
@@ -155,44 +134,55 @@ function MapView() {
         style={{ height: "50%", width: "50%" }}
       >
         <ZoomHandler />
+        <ClickHandler />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
           url="https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png"
         />
         {MarkersToShow.map((marker) => (
           <Marker
+            key={marker.id}
             position={marker.geocode}
             icon={customIcon}
             eventHandlers={{
-              ...(marker.type === "country" || marker.type === "state"
-                ? {
-                    mouseover: (e) => e.target.openPopup(),
-                    mouseout: (e) => e.target.closePopup(),
-                    click: (e) => {
-                      const map = e.target._map;
-                      if (zoomLevel < 5) {
-                        map.flyTo(marker.geocode, 6, { duration: 1 });
-                      } else if (zoomLevel < 8) {
-                        map.flyTo(marker.geocode, 8, { duration: 1 });
-                      }
-                    },
-                  }
-                : {
-                    click: (e) => e.target.openPopup(),
-                  }),
+              mouseover: (e) => e.target.openPopup(),
+              mouseout: (e) => e.target.closePopup(),
+              click: (e) => {
+                const map = e.target._map;
+                if (zoomLevel < 5) {
+                  map.flyTo(marker.geocode, 6, { duration: 1 });
+                } else if (zoomLevel < 8) {
+                  map.flyTo(marker.geocode, 8, { duration: 1 });
+                }
+              },
             }}
           >
-            <Popup >
+            <Popup>
               <div className="d-flex justify-content-center">
-                {marker.type === "city" ?(
-                  <CityPopup marker = {marker}/>
-                ):(
-                  <CountryStatePopup marker={marker}/>
-                )}
+                <CountryStatePopup marker={marker} />
+                {/* {marker.type === "city" ? (
+                  <CityPopup marker={marker} />
+                ) : (
+                  <CountryStatePopup marker={marker} />
+                )} */}
               </div>
             </Popup>
           </Marker>
         ))}
+        {cityMarkers && (
+          <Marker
+            position={cityMarkers.geocode}
+            icon={customIcon}
+            eventHandlers={{
+              mouseover: (e) => e.target.openPopup(),
+              mouseout: (e) => e.target.closePopup(),
+            }}
+          >
+            <Popup>
+              <CityPopup marker={cityMarkers} />
+            </Popup>
+          </Marker>
+        )}
       </MapContainer>
     </div>
   );
