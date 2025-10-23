@@ -56,10 +56,12 @@ function Search() {
 
       
       {weatherData && (
+        <div className="carousel-styling">
         <div
           id="weatherCarousel"
           className="carousel slide w-50 mx-auto mt-4"
           data-bs-ride="carousel"
+          data-bs-theme = "dark"
         >
           <div className="carousel-inner">
             <div className="carousel-item active">
@@ -101,6 +103,7 @@ function Search() {
           >
             <span className="carousel-control-next-icon" aria-hidden="true"></span>
           </button>
+        </div>
         </div>
       )}
     </div>
