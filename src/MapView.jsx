@@ -28,7 +28,7 @@ function MapView() {
   function ClickHandler() {
     useMapEvents({
       click: (e) => {
-        if (zoomLevel >= 8) {
+        if (zoomLevel >= 6) {
           const { lat, lng } = e.latlng;
           setCityMarker({
             geocode: [lat, lng],
@@ -97,12 +97,13 @@ function MapView() {
     { geocode: [56.2639, 9.5018], Popup: "Denmark", type: "country" },
     { geocode: [53.1424, -7.6921], Popup: "Ireland", type: "country" },
   ];
+
   const StateMarkers = statesData
     .filter(
       (state) =>
         state.type === "state" ||
         state.type === "union territory" ||
-        state.type === "province" ||
+        // state.type === "province" ||
         state.type === "prefecture" ||
         state.type === "canton" ||
         state.type === "region" ||

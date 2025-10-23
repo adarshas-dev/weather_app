@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Search.css";
-import { Card } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
 import Toggle from "./Toggle";
 
 const API_KEY = "5c4251bc772c301046bb915c01c83b7e";
@@ -69,45 +69,53 @@ function Search() {
 
   return (
     <div className="App Search">
-      <div className="search-container d-flex justify-content-center">
-        <div className="true-weather">
-          <h1
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/9231/9231625.png"
-              style={{ width: "50px" }}
-              alt="logo"
+      <div className="search-container container-fluid">
+        <Row className="align-items-center">
+          <div className="weathery col-3 d-flex align-items-center justify-content-start ps-4">
+            <h1
+              style={{
+                fontWeight: "bold",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                margin: 0,
+              }}
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/9231/9231625.png"
+                style={{ width: "50px" }}
+                alt="logo"
+              />
+              Weathery
+            </h1>
+          </div>
+
+          <div className="col-6 d-flex justify-content-center align-items-center">
+            <input
+              type="text"
+              className="search-input shadow-sm form-control"
+              placeholder="Enter the Place..."
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              onKeyDown={handleKeyDown}
+              style={{ maxWidth: "70%" }}
             />
-            True Weather
-          </h1>
-        </div>
+            <button
+              className="search-btn shadow-sm btn btn-success ms-2"
+              onClick={fetchWeather}
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/18290/18290728.png"
+                style={{ width: "25px" }}
+                alt="search-icon"
+              />
+            </button>
+          </div>
 
-        <input
-          type="text"
-          className="search-input shadow-sm"
-          placeholder="Enter the Place...."
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button
-          color="green"
-          className="search-btn shadow-sm"
-          onClick={fetchWeather}
-        >
-          <img
-            src="https://cdn-icons-png.flaticon.com/128/954/954591.png"
-            style={{ width: "25px" }}
-            alt="search-icon"
-          />
-        </button>
-
-        <div>
-          <Toggle />
-        </div>
+          <div className="col-3 d-flex justify-content-end align-items-center pe-4">
+            <Toggle />
+          </div>
+        </Row>
       </div>
 
       {error && (
@@ -121,7 +129,7 @@ function Search() {
           id="weatherCarousel"
           className="carousel slide w-40 mx-auto mt-4"
           data-bs-ride="carousel"
-           data-bs-interval="3000"
+          data-bs-interval="3000"
         >
           <div className="carousel-inner">
             {carouselItems.map((item, index) => (
@@ -129,7 +137,10 @@ function Search() {
                 key={item.id || index}
                 className={`carousel-item ${index === 0 ? "active" : ""}`}
               >
-                <div className="card-data p-4 text-center mx-auto" id="card-design">
+                <div
+                  className="card-data p-4 text-center mx-auto"
+                  id="card-design"
+                >
                   <div
                     className="d-flex justify-content-between align-items-center"
                     style={{ margin: "0px", padding: "0px" }}
@@ -181,7 +192,7 @@ function Search() {
                       </div>
                     </div>
 
-                    <div className="col">
+                    <div className="col" style={{marginLeft:"400px"}}>
                       <img
                         src="https://cdn-icons-png.flaticon.com/128/9231/9231936.png"
                         alt="img-wind"
