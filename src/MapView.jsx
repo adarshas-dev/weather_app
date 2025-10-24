@@ -12,12 +12,15 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import CountryStatePopup from "./CountryStatePopup";
+import SearchPopup from "./SearchPopup";
 
-function MapView() {
+function MapView({ location }) {
   const [zoomLevel, setZoomLevel] = useState(2);
   const [cityMarkers, setCityMarker] = useState(null);
 
-  //theme check
+  const defaultCenter = [20.5937, 78.9629];
+
+  //theme check----------------------
   const [isDark, setIsDark] = useState(
     document.body.classList.contains("dark")
   );
@@ -31,7 +34,7 @@ function MapView() {
   const tileUrl = isDark
     ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
     : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-  //---
+  //---------------------------------
 
   function ZoomHandler() {
     useMapEvents({
@@ -136,6 +139,10 @@ function MapView() {
     iconUrl: "https://cdn-icons-png.flaticon.com/128/929/929426.png",
     iconSize: [20, 20],
   });
+  const yellowIcon = new Icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/128/149/149060.png",
+    iconSize: [20, 20],
+  });
 
   const MarkersToShow =
     zoomLevel < 5 ? CountryMarkers : zoomLevel <= 7 ? StateMarkers : [];
@@ -146,8 +153,8 @@ function MapView() {
       className="d-flex justify-content-center align-items-center"
     >
       <MapContainer
-        center={[20.5937, 78.9629]}
-        zoom={2}
+        center={location ? [location.lat, location.lon] : defaultCenter}
+        zoom={location ? 5 : 3}
         style={{
           height: "80vh",
           width: "80vw",
@@ -203,6 +210,22 @@ function MapView() {
           >
             <Popup>
               <CityPopup marker={cityMarkers} />
+            </Popup>
+          </Marker>
+        )}
+
+        {location && (
+          <Marker position={[location.lat, location.lon]} icon={yellowIcon}>
+            <Popup>
+              <SearchPopup
+                searchData={{
+                  name: location.name,
+                  country: location.country,
+                  temp: location.temp,
+                  weather: location.weather,
+                  icon: location.icon,
+                }}
+              />
             </Popup>
           </Marker>
         )}

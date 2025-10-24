@@ -6,7 +6,7 @@ import Toggle from "./Toggle";
 
 const API_KEY = "5c4251bc772c301046bb915c01c83b7e";
 
-function Search() {
+function Search({ setLocation }) {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState("");
@@ -53,6 +53,18 @@ function Search() {
 
       setWeatherData(data);
       setError("");
+
+      //------------------------------
+      setLocation({
+        lat: data.coord.lat,
+        lon: data.coord.lon,
+        name: data.name,
+        country: data.sys.country,
+        temp: data.main.temp,
+        weather: data.weather[0].main,
+        icon: data.weather[0].icon,
+      });
+      //------------------------------
     } catch (err) {
       setWeatherData(null);
       setError(err.message);
@@ -67,7 +79,7 @@ function Search() {
 
   const carouselItems = weatherData ? [weatherData] : randomWeather;
 
-   const allIcon = {
+  const allIcon = {
     "01d": "https://cdn-icons-png.flaticon.com/128/6974/6974833.png",
     "02d": "https://cdn-icons-png.flaticon.com/128/3222/3222800.png",
     "03d": "https://cdn-icons-png.flaticon.com/128/1146/1146869.png",
@@ -77,7 +89,7 @@ function Search() {
     "11d": "https://cdn-icons-png.flaticon.com/128/1779/1779927.png",
     "13d": "https://cdn-icons-png.flaticon.com/128/4834/4834727.png",
     "50d": "https://cdn-icons-png.flaticon.com/128/10405/10405474.png",
-    
+
     "01n": "https://cdn-icons-png.flaticon.com/128/7204/7204171.png",
     "02n": "https://cdn-icons-png.flaticon.com/128/10660/10660906.png",
     "03n": "https://cdn-icons-png.flaticon.com/128/4834/4834576.png",
