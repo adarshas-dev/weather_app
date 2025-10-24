@@ -67,6 +67,28 @@ function Search() {
 
   const carouselItems = weatherData ? [weatherData] : randomWeather;
 
+   const allIcon = {
+    "01d": "https://cdn-icons-png.flaticon.com/128/6974/6974833.png",
+    "02d": "https://cdn-icons-png.flaticon.com/128/3222/3222800.png",
+    "03d": "https://cdn-icons-png.flaticon.com/128/1146/1146869.png",
+    "04d": "https://cdn-icons-png.flaticon.com/128/414/414927.png",
+    "09d": "https://cdn-icons-png.flaticon.com/128/15621/15621965.png",
+    "10d": "https://cdn-icons-png.flaticon.com/128/5545/5545843.png",
+    "11d": "https://cdn-icons-png.flaticon.com/128/1779/1779927.png",
+    "13d": "https://cdn-icons-png.flaticon.com/128/4834/4834727.png",
+    "50d": "https://cdn-icons-png.flaticon.com/128/10405/10405474.png",
+    
+    "01n": "https://cdn-icons-png.flaticon.com/128/7204/7204171.png",
+    "02n": "https://cdn-icons-png.flaticon.com/128/10660/10660906.png",
+    "03n": "https://cdn-icons-png.flaticon.com/128/4834/4834576.png",
+    "04n": "https://cdn-icons-png.flaticon.com/128/13804/13804450.png",
+    "09n": "https://cdn-icons-png.flaticon.com/128/2930/2930139.png",
+    "10n": "https://cdn-icons-png.flaticon.com/128/1332/1332374.png",
+    "11n": "https://cdn-icons-png.flaticon.com/128/1959/1959348.png",
+    "13n": "https://cdn-icons-png.flaticon.com/128/4005/4005898.png",
+    "50n": "https://cdn-icons-png.flaticon.com/128/2930/2930127.png",
+  };
+
   return (
     <div className="App Search">
       <div className="search-container container-fluid">
@@ -130,6 +152,7 @@ function Search() {
           className="carousel slide w-40 mx-auto mt-4"
           data-bs-ride="carousel"
           data-bs-interval="3000"
+          data-bs-pause="false"
         >
           <div className="carousel-inner">
             {carouselItems.map((item, index) => (
@@ -169,7 +192,7 @@ function Search() {
                         }}
                       >
                         <img
-                          src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                          src={allIcon[item.weather[0].icon]}
                           alt=""
                           style={{ width: "70px" }}
                         />
@@ -192,7 +215,7 @@ function Search() {
                       </div>
                     </div>
 
-                    <div className="col" style={{marginLeft:"400px"}}>
+                    <div className="col" style={{ marginLeft: "400px" }}>
                       <img
                         src="https://cdn-icons-png.flaticon.com/128/9231/9231936.png"
                         alt="img-wind"

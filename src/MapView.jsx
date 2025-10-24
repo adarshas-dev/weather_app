@@ -2,7 +2,7 @@ import statesData from "./states.json";
 import CityPopup from "./CityPopup";
 import "./MapView.css";
 import { Icon, popup } from "leaflet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MapContainer,
   Marker,
@@ -16,6 +16,22 @@ import CountryStatePopup from "./CountryStatePopup";
 function MapView() {
   const [zoomLevel, setZoomLevel] = useState(2);
   const [cityMarkers, setCityMarker] = useState(null);
+
+  //theme check
+  const [isDark, setIsDark] = useState(
+    document.body.classList.contains("dark")
+  );
+  useEffect(() => {
+    const checkTheme = () =>
+      setIsDark(document.body.classList.contains("dark"));
+    window.addEventListener("click", checkTheme);
+    return () => window.removeEventListener("click", checkTheme);
+  }, []);
+
+  const tileUrl = isDark
+    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  //---
 
   function ZoomHandler() {
     useMapEvents({
@@ -135,16 +151,16 @@ function MapView() {
         style={{
           height: "80vh",
           width: "80vw",
-          borderRadius: "20px", // rounded corners
-          overflow: "hidden", // important so map tiles stay inside rounded corners
-          boxShadow: "0 4px 15px rgba(0,0,0,0.2)", // optional shadow
+          borderRadius: "20px",
+          overflow: "hidden",
+          boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
         }}
       >
         <ZoomHandler />
         <ClickHandler />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-          url="https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png"
+          url={tileUrl}
         />
         {MarkersToShow.map((marker) => (
           <Marker

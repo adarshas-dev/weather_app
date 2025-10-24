@@ -1,8 +1,9 @@
 import { Card, Col, Image, Row } from "react-bootstrap";
+import "./CountryStatePopup.css"
 
 function CountryStatePopup({ marker }) {
   return (
-    <div>
+    <div className="popup">
       <Card
         border="danger"
         style={{
@@ -18,8 +19,8 @@ function CountryStatePopup({ marker }) {
             style={{
               fontSize: "16px",
               fontWeight: "bold",
-              fontFamily: "Helvetica",
-              color: "#222",
+              // fontFamily: "Helvetica",
+              // color: "#222",
             }}
           >
             {marker.Popup}
