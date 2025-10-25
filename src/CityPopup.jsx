@@ -58,7 +58,8 @@ function CityPopup({ marker }) {
       >
         <Card.Body style={{ padding: "6px" }}>
           <Card.Title style={{ fontSize: "16px", fontWeight: "bold" }}>
-            {weather.name}
+            {weather.name.normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")}
           </Card.Title>
           <Card.Subtitle className="countryName" style={{ fontSize: "11px" }}>
             {weather.sys?.country}

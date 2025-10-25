@@ -128,9 +128,14 @@ function Search({ setLocation }) {
             <input
               type="text"
               className="search-input shadow-sm form-control"
-              placeholder="Enter the Place..."
+              placeholder="Enter Any City..."
               value={city}
-              onChange={(e) => setCity(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                const formattedValue =
+                  value.charAt(0).toUpperCase() + value.slice(1);
+                setCity(formattedValue);
+              }}
               onKeyDown={handleKeyDown}
               style={{ maxWidth: "70%" }}
             />
@@ -188,7 +193,9 @@ function Search({ setLocation }) {
                           marginBottom: "5px",
                         }}
                       >
-                        {item.name}
+                        {item.name  //used for  ā -> a
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")}
                       </h2>
                       <h4 className="countryData" style={{ fontSize: "20px" }}>
                         {item.sys.country}

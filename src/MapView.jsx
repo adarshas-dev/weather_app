@@ -190,11 +190,6 @@ function MapView({ location }) {
             <Popup>
               <div className="d-flex justify-content-center">
                 <CountryStatePopup marker={marker} />
-                {/* {marker.type === "city" ? (
-                  <CityPopup marker={marker} />
-                ) : (
-                  <CountryStatePopup marker={marker} />
-                )} */}
               </div>
             </Popup>
           </Marker>
