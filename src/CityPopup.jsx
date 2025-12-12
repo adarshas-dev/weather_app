@@ -4,7 +4,7 @@ import { Card, Col, Image, Row } from "react-bootstrap";
 
 function CityPopup({ marker }) {
   const [weather, setWeather] = useState(null);
-  const API_KEY = "5c4251bc772c301046bb915c01c83b7e";
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
   const [lat, lon] = marker.geocode;
 
   useEffect(() => {
