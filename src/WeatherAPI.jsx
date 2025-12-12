@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 
 function WeatherAPI() {
-  const API_KEY = "5c4251bc772c301046bb915c01c83b7e";
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
   const [weather, setWeather] = useState(null);
 
   async function WeatherData(city) {
