@@ -4,7 +4,7 @@ import "./Search.css";
 import { Card, Row } from "react-bootstrap";
 import Toggle from "./Toggle";
 
-const API_KEY = "5c4251bc772c301046bb915c01c83b7e";
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
 function Search({ setLocation }) {
   const [city, setCity] = useState("");
